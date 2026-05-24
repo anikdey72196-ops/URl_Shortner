@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+        }
+        
+        .subscribe {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .subscribe p {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .subscribe-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .subscribe-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+        }
+
+        .submit-btn {
+            background-color: #6366f1;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: #4f46e5;
+        }
+
+        .result {
+            margin-top: 20px;
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 8px;
+            color: #0369a1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .result a {
+            color: #0284c7;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .result a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <form action="{% url 'shorten' %}" method="POST" class="subscribe">
+        {% csrf_token %}
+        <p>Shorten URL</p>
+        <input placeholder="Your long URL" class="subscribe-input" name="URl" type="url" required>
+        <button type="submit" class="submit-btn">Generate short link</button>
+        
+        {% if short_code %}
+        <div class="result">
+            <p style="margin: 0 0 5px 0; font-size: 14px;">Your short link:</p>
+            <a href="{% url 'redirect' short_code %}" target="_blank">{{ request.scheme }}://{{ request.get_host }}{% url 'redirect' short_code %}</a>
+        </div>
+        {% endif %}
+    </form>
+</body>
+</html>
